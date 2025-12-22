@@ -44,9 +44,9 @@ export function NewConversationDialog({
         type: "direct",
         participantIds: [participantId],
       });
-      return response;
+      return await response.json();
     },
-    onSuccess: (data) => {
+    onSuccess: (data: { id: string }) => {
       queryClient.invalidateQueries({ queryKey: ["/api/conversations"] });
       onConversationCreated(data.id);
       onOpenChange(false);

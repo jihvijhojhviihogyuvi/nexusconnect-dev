@@ -52,9 +52,9 @@ export function NewGroupDialog({
         description: groupDescription,
         participantIds: selectedUserIds,
       });
-      return response;
+      return await response.json();
     },
-    onSuccess: (data) => {
+    onSuccess: (data: { id: string }) => {
       queryClient.invalidateQueries({ queryKey: ["/api/conversations"] });
       onGroupCreated(data.id);
       onOpenChange(false);

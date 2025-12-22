@@ -52,10 +52,10 @@ export function ConversationList({
             return oldData.map((conv) =>
               conv.id === conversationId
                 ? {
-                    ...conv,
-                    lastMessage: payload.message,
-                    unreadCount: (conv.unreadCount || 0) + 1,
-                  }
+                  ...conv,
+                  lastMessage: payload.message,
+                  unreadCount: (conv.unreadCount || 0) + 1,
+                }
                 : conv
             );
           });
@@ -74,11 +74,11 @@ export function ConversationList({
   const filteredConversations = conversations?.filter((conv) => {
     if (!searchQuery) return true;
     const searchLower = searchQuery.toLowerCase();
-    
+
     if (conv.type === "group") {
       return conv.name?.toLowerCase().includes(searchLower);
     }
-    
+
     const otherParticipant = conv.participants.find(
       (p) => p.user.id !== currentUser.id
     )?.user;
@@ -94,11 +94,11 @@ export function ConversationList({
         isGroup: true,
       };
     }
-    
+
     const otherParticipant = conversation.participants.find(
       (p) => p.user.id !== currentUser.id
     )?.user;
-    
+
     return {
       name: otherParticipant
         ? `${otherParticipant.firstName || ""} ${otherParticipant.lastName || ""}`.trim() || "Unknown"
@@ -119,21 +119,21 @@ export function ConversationList({
       (p) => p.userId === currentUser.id
     );
     const draftContent = currentParticipant?.draftContent;
-    
+
     if (draftContent) {
       return {
         type: "draft" as const,
         content: draftContent,
       };
     }
-    
+
     if (conversation.lastMessage) {
       return {
         type: "message" as const,
         content: conversation.lastMessage.content,
       };
     }
-    
+
     return {
       type: "empty" as const,
       content: null,
@@ -196,7 +196,7 @@ export function ConversationList({
                 {searchQuery ? "No conversations found" : "No conversations yet"}
               </p>
               <Button
-                variant="link"
+                variant="ghost"
                 className="mt-2"
                 onClick={onNewConversation}
                 data-testid="button-start-conversation"
@@ -229,7 +229,7 @@ export function ConversationList({
                   ) : (
                     <div className="h-10 w-10 rounded-full bg-muted" />
                   )}
-                  
+
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-medium truncate" data-testid={`text-conversation-name-${conversation.id}`}>
@@ -241,7 +241,7 @@ export function ConversationList({
                         </span>
                       )}
                     </div>
-                    
+
                     <div className="flex items-center justify-between gap-2 mt-0.5">
                       {typing ? (
                         <div className="flex items-center gap-1.5">
@@ -250,18 +250,18 @@ export function ConversationList({
                         </div>
                       ) : (() => {
                         const preview = getMessagePreview(conversation);
-                        
+
                         if (preview.type === "draft") {
                           return (
-                            <p 
-                              className="text-sm truncate italic text-amber-600 dark:text-amber-500" 
+                            <p
+                              className="text-sm truncate italic text-amber-600 dark:text-amber-500"
                               data-testid={`text-draft-${conversation.id}`}
                             >
                               Draft: {preview.content}
                             </p>
                           );
                         }
-                        
+
                         if (preview.type === "message") {
                           return (
                             <p className="text-sm text-muted-foreground truncate" data-testid={`text-last-message-${conversation.id}`}>
@@ -269,14 +269,14 @@ export function ConversationList({
                             </p>
                           );
                         }
-                        
+
                         return <p className="text-sm text-muted-foreground italic">No messages yet</p>;
                       })()}
-                      
+
                       {(conversation.unreadCount ?? 0) > 0 && (
-                        <Badge 
-                          variant="destructive" 
-                          className="shrink-0 min-w-5 h-5 px-1.5 text-xs rounded-full flex items-center justify-center" 
+                        <Badge
+                          variant="destructive"
+                          className="shrink-0 min-w-5 h-5 px-1.5 text-xs rounded-full flex items-center justify-center"
                           data-testid={`badge-unread-${conversation.id}`}
                         >
                           {formatUnreadCount(conversation.unreadCount!)}
